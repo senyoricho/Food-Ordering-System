@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5; /* Soft neutral background color */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .header-main {
+            background-color: #ff5722; /* Vibrant color for header */
+            color: white; /* Ensure this line is set to white */
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(250, 0, 0, 0.1);
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%; /* Ensure this is set to 100% */
+            max-width: 980px;
+        }
+
+            .header-main h1 {
+            color: white !important; /* Force the text color to white */
+        }
+
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(255, 87, 34, 0.2); /* Colored shadow */
+            margin-bottom: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #444;
+            margin-bottom: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+        h3 {
+            text-align: center;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .menu, .order-details, .payment, .report {
+            margin: 20px;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(255, 87, 34, 0.1); /* Colored shadow */
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            background-color: #ff9800; /* Vibrant color for buttons */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #e64a19; /* Darker shade for hover effect */
+            transform: scale(1.02);
+        }
+        .hidden {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        .total {
+            font-weight: bold;
+            color: #333;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .flex-container > div {
+            width: 48%;
+        }
+        .food-drink-name {
+            font-weight: bold;
+            color: #ff5722; /* Complementary color for food/drink names */
+        }
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .order-item button {
+            background-color: #dc3545;
+        }
+        .order-item button:hover {
+            background-color: #c82333;
+        }
+        #change, #receipt {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #receipt-content {
+            margin-top: 10px;
+        }
+        .header {
+            background-color: #ff5722; /* Vibrant color for headers */
+            color: white;
+            padding: 15px;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .header h2 {
+            margin: 0;
+        }
+        .footer {
+            background-color: #ff5722; /* Match footer with header color */
+            color: white;
+            padding: 10px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .button-container {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+           .flex-container > div {
+            width: 100%;
+          }
+       }
+    </style>
+</head>
+<body>
+    <div id="main-menu" class="container">
+        <div class="header-main">
+            <h1>Food Ordering System</h1>
+        </div>                      
+        <div class="header">
+            <h2>Main Menu</h2>
+        </div>
+        <div class="button-container">
+            <button onclick="showOrderMenu()">Order Menu (O)</button>
+            <button onclick="showReportMenu()">Report Menu (R)</button>
+            <button onclick="showPaymentMenu()">Payment Menu (P)</button>
+            <button onclick="exit()">Exit (E)</button>
+        </div>
+    </div>
+
+    <div id="order-menu" class="container hidden">
+        <div class="header">
+            <h2>Order Menu</h2>
+        </div>
+        <div class="flex-container">
+            <div>
+                <h3>FOODS</h3>
+                <div id="food-items">
+                    <!-- Food items will be dynamically added here -->
+                </div>
+            </div>
+            <div>
+                <h3>DRINKS</h3>
+                <div id="drink-items">
+                    <!-- Drink items will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+        <button onclick="showMainMenu()">Back to Main Menu</button>
+    </div>
+
+    <div id="payment-menu" class="container hidden">
+        <div class="header">
+            <h2>Payment Menu</h2>
+        </div>
+        <div id="order-summary">
+            <!-- Order summary will be dynamically added here -->
+        </div>
+        <div class="input-group">
+            <input type="number" id="money-tendered" placeholder="Money Tendered" />
+        </div>
+        <div class="input-group">
+            <label for="discount">Select Discount:</label>
+            <select id="discount">
+                <option value="0">None</option>
+                <option value="0.20">PWD/Senior (20%)</option>
+            </select>
+        </div>
+        <button onclick="calculateChange()">Pay</button>
+        <div id="change"></div>
+        <div id="receipt" class="hidden">
+            <div id="receipt-content"></div>
+        </div>
+        <button onclick="showMainMenu()">Back to Main Menu</button>
+    </div>
+
+    <div id="report-menu" class="container hidden">
+        <div class="header">
+            <h2>Report Menu</h2>
+        </div>
+        <div id="daily-report">
+            <!-- Daily report will be dynamically added here -->
+        </div>
+        <button onclick="showMainMenu()">Back to Main Menu</button>
+    </div>
+
+    <script>
+        let menuItems = [
+            { id: 1, name: "Beef Bulgogi", price: 80.00, type: "food" },
+            { id: 2, name: "Chicken Biryani", price: 90.00, type: "food" },
+            { id: 3, name: "Chili Pork", price: 50.00, type: "food" },
+            { id: 4, name: "Crispy Pata", price: 150.00, type: "food" },
+            { id: 5, name: "Grilled Kebab", price: 70.00, type: "food" },
+            { id: 6, name: "Egg Curry", price: 60.00, type: "food" },
+            { id: 7, name: "Gata ng Kalabasa", price: 45.00, type: "food" },
+            { id: 8, name: "Inihaw na Isda", price: 95.00, type: "food" },
+            { id: 9, name: "Kare-Kare", price: 120.00, type: "food" },
+            { id: 10, name: "Pancit Canton", price: 30.00, type: "food" },
+            { id: 11, name: "Sisig", price: 85.00, type: "food" },
+            { id: 12, name: "Shawarma", price: 50.00, type: "food" },
+            { id: 13, name: "Hotdog", price: 40.00, type: "food" },
+            { id: 14, name: "Hamburger", price: 60.00, type: "food" },
+            { id: 15, name: "Fish and Chips", price: 70.00, type: "food" },
+            { id: 16, name: "Pizza", price: 100.00, type: "food" },
+            { id: 17, name: "Pasta", price: 80.00, type: "food" },
+            { id: 18, name: "Fried Chicken", price: 75.00, type: "food" },
+            { id: 19, name: "Tacos", price: 55.00, type: "food" },
+            { id: 20, name: "Burrito", price: 65.00, type: "food" },
+            { id: 21, name: "Absolute", price: 5.00, type: "drink" },
+            { id: 22, name: "Bull", price: 5.00, type: "drink" },
+            { id: 23, name: "Coca-Cola", price: 8.00, type: "drink" },
+            { id: 24, name: "Pepsi", price: 8.00, type: "drink" },
+            { id: 25, name: "Sprite", price: 8.00, type: "drink" },
+            { id: 26, name: "7-Up", price: 8.00, type: "drink" },
+            { id: 27, name: "Mountain Dew", price: 8.00, type: "drink" },
+            { id: 28, name: "Fanta", price: 8.00, type: "drink" },
+            { id: 29, name: "Royal Tru-Orange", price: 8.00, type: "drink" },
+            { id: 30, name: "Mirinda", price: 8.00, type: "drink" },
+            { id: 31, name: "Coffee Americano", price: 5.00, type: "drink" },
+            { id: 32, name: "Coffee Black", price: 5.00, type: "drink" },
+            { id: 33, name: "Coffee Cappuccino", price: 5.00, type: "drink" },
+            { id: 34, name: "Coffee Latte", price: 5.00, type: "drink" },
+            { id: 35, name: "Coffee Macchiato", price: 5.00, type: "drink" },
+            { id: 36, name: "Tea Black", price: 5.00, type: "drink" },
+            { id: 37, name: "Tea Green", price: 5.00, type: "drink" },
+            { id: 38, name: "Tea Lemon", price: 5.00, type: "drink" },
+            { id: 39, name: "Tea Mint", price: 5.00, type: "drink" },
+            { id: 40, name: "Tea Chamomile", price: 5.00, type: "drink" }
+        ];
+
+        let order = [];
+        let transactions = [];
+
+        function showMainMenu() {
+            document.getElementById('main-menu').classList.remove('hidden');
+            document.getElementById('order-menu').classList.add('hidden');
+            document.getElementById('payment-menu').classList.add('hidden');
+            document.getElementById('report-menu').classList.add('hidden');
+        }
+
+        function showOrderMenu() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('order-menu').classList.remove('hidden');
+            renderMenuItems();
+        }
+
+        function showReportMenu() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('report-menu').classList.remove('hidden');
+            renderDailyReport();
+        }
+
+        function showPaymentMenu() {
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('payment-menu').classList.remove('hidden');
+            renderOrderSummary();
+        }
+
+        function exit() {
+            alert('Exiting the system.');
+        }
+
+        function renderMenuItems() {
+            const foodDiv = document.getElementById('food-items');
+            const drinkDiv = document.getElementById('drink-items');
+            foodDiv.innerHTML = '';
+            drinkDiv.innerHTML = '';
+
+            const foodTable = document.createElement('table');
+            const drinkTable = document.createElement('table');
+            
+            const foodHeader = foodTable.insertRow();
+            foodHeader.innerHTML = `<th>ID</th><th>Food Name</th><th>Price</th><th>Action</th>`;
+
+            const drinkHeader = drinkTable.insertRow();
+            drinkHeader.innerHTML = `<th>ID</th><th>Drink Name</th><th>Price</th><th>Action</th>`;
+
+            menuItems.filter(item => item.type === 'food').forEach(food => {
+                const row = foodTable.insertRow();
+                row.innerHTML = `
+                    <td>${food.id}</td>
+                    <td class="food-drink-name">${food.name}</td>
+                    <td>${food.price.toFixed(2)}</td>
+                    <td><button onclick="addToOrder(${food.id}, 'food')">Add Food</button></td>`;
+            });
+
+            menuItems.filter(item => item.type === 'drink').forEach(drink => {
+                const row = drinkTable.insertRow();
+                row.innerHTML = `
+                    <td>${drink.id}</td>
+                    <td class="food-drink-name">${drink.name}</td>
+                    <td>${drink.price.toFixed(2)}</td>
+                    <td><button onclick="addToOrder(${drink.id}, 'drink')">Add Drink</button></td>`;
+            });
+
+            foodDiv.appendChild(foodTable);
+            drinkDiv.appendChild(drinkTable);
+        }
+
+        function addToOrder(itemId, type) {
+            const item = menuItems.find(i => i.id === itemId);
+            const quantity = prompt(`How many ${item.name} would you like to order?`);
+            if (quantity && !isNaN(quantity) && quantity > 0) {
+                order.push({ ...item, quantity: Number(quantity) });
+                alert(`${quantity} ${item.name}(s) added to your order.`);
+                renderOrderSummary();
+            } else {
+                alert('Invalid quantity');
+            }
+        }
+
+        function removeFromOrder(index) {
+            order.splice(index, 1);
+            renderOrderSummary();
+        }
+
+        function renderOrderSummary() {
+            const summaryDiv = document.getElementById('order-summary');
+            summaryDiv.innerHTML = '<h3>Order Summary</h3>';
+            let total = 0;
+            order.forEach((item, index) => {
+                total += item.price * item.quantity;
+                const div = document.createElement('div');
+                div.classList.add('order-item');
+                div.innerHTML = `${item.name} x${item.quantity} - ${(item.price * item.quantity).toFixed(2)} <button onclick="removeFromOrder(${index})">Remove</button>`;
+                summaryDiv.appendChild(div);
+            });
+            summaryDiv.innerHTML += `<div class="total">Total: ${total.toFixed(2)}</div>`;
+        }
+
+        function calculateChange() {
+            const moneyTendered = parseFloat(document.getElementById('money-tendered').value);
+            const discountRate = parseFloat(document.getElementById('discount').value);
+            const total = order.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = total * discountRate;
+            const discountedTotal = total - discount;
+            const vat = discountedTotal * 0.12;
+            const grandTotal = discountedTotal + vat;
+            const change = moneyTendered - grandTotal;
+
+            if (change >= 0) {
+                const receiptContent = document.getElementById('receipt-content');
+                receiptContent.innerHTML = `
+                    <p><strong>Receipt:</strong></p>
+                    <p>Total: ${total.toFixed(2)}</p>
+                    <p>Discount: -${discount.toFixed(2)}</p>
+                    <p>VAT: ${vat.toFixed(2)}</p>
+                    <p><strong>Grand Total: ${grandTotal.toFixed(2)}</strong></p>
+                    <p>Money Tendered: ${moneyTendered.toFixed(2)}</p>
+                    <p>Change: ${change.toFixed(2)}</p>
+                `;
+                document.getElementById('receipt').classList.remove('hidden');
+                transactions.push({ order: [...order], total: grandTotal.toFixed(2), date: new Date().toLocaleString() });
+                order = [];
+                renderOrderSummary();
+                alert('Successfully Paid!');
+            } else {
+                alert('Insufficient money tendered');
+            }
+        }
+
+        function renderDailyReport() {
+            const reportDiv = document.getElementById('daily-report');
+            reportDiv.innerHTML = '<h3>Daily Transactions</h3>';
+            const table = document.createElement('table');
+            const header = table.insertRow();
+            header.innerHTML = `<th>#</th><th>Date</th><th>Order</th><th>Total</th>`;
+            transactions.forEach((transaction, index) => {
+                const row = table.insertRow();
+                row.innerHTML = `<td>${index + 1}</td><td>${transaction.date}</td><td>${transaction.order.map(item => `${item.name} x${item.quantity}`).join(', ')}</td><td>${transaction.total}</td>`;
+            });
+            reportDiv.appendChild(table);
+        }
+    </script>
+</body>
+</html>
